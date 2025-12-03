@@ -1,0 +1,66 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SimpleUIExample
+{
+    public class MainForm : Form
+    {
+        private Button btnClick;
+        private Label lblMessage;
+
+        public MainForm()
+        {
+            this.Text = "Demo UI C#";
+            this.Size = new Size(400, 250);
+
+            lblMessage = new Label()
+            {
+                Text = "Nhấn nút để hiển thị thông báo",
+                Location = new Point(20, 20),
+                AutoSize = true
+            };
+
+            btnClick = new Button()
+            {
+                Text = "Click Me",
+                Location = new Point(20, 60),
+                Size = new Size(120, 40)
+            };
+
+            btnClick.Click += BtnClick_Click;
+
+            Controls.Add(lblMessage);
+            Controls.Add(btnClick);
+        }
+
+        private void BtnClick_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Bạn vừa nhấn nút!", "Thông báo");
+        }
+
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.Run(new MainForm());
+        }
+    }
+}
+
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public Student(int id, string name, int age)
+    {
+        Id = id;
+        Name = name;
+        Age = age;
+    }
+}
+
+// CRUD Manager for Student
+public class Stud
