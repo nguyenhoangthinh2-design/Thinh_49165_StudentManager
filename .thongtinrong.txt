@@ -1,0 +1,114 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace SimpleUIExample
+{
+    public class MainForm : Form
+    {
+        private Button btnClick;
+        private Label lblMessage;
+
+        public MainForm()
+        {
+            this.Text = "Demo UI C#";
+            this.Size = new Size(400, 250);
+
+            lblMessage = new Label()
+            {
+                Text = "Nhấn nút để hiển thị thông báo",
+                Location = new Point(20, 20),
+                AutoSize = true
+            };
+
+            btnClick = new Button()
+            {
+                Text = "Click Me",
+                Location = new Point(20, 60),
+                Size = new Size(120, 40)
+            };
+
+            btnClick.Click += BtnClick_Click;
+
+            Controls.Add(lblMessage);
+            Controls.Add(btnClick);
+        }
+
+        private void BtnClick_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Bạn vừa nhấn nút!", "Thông báo");
+        }
+
+        [STAThread]
+        public static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.Run(new MainForm());
+        }
+    }
+}
+
+public class Student
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public Student(int id, string name, int age)
+    {
+        Id = id;
+        Name = name;
+        Age = age;
+    }
+}
+
+// CRUD Manager for Student
+public class StudentManager
+{
+    private List<Student> students = new List<Student>();
+
+    // CREATE
+    public void AddStudent(Student s)
+    {
+        if (s == null || string.IsNullOrWhiteSpace(s.Name) || s.Age <= 0)
+            throw new Exception("Thông tin sinh viên không hợp lệ!");
+        students.Add(s);
+    }
+
+    // READ
+    public List<Student> GetAll()
+    {
+        return students;
+    }
+
+    // UPDATE
+    public bool UpdateStudent(int id, string newName, int newAge)
+    {
+        var s = students.FirstOrDefault(x => x.Id == id);
+        if (s == null) return false;
+        if (string.IsNullOrWhiteSpace(newName) || newAge <= 0)
+            return false;
+        s.Name = newName;
+        s.Age = newAge;
+        return true;
+    }
+    }
+
+    // DELETE
+    public bool DeleteStudent(int id)
+    {
+        var s = students.FirstOrDefault(x => x.Id == id);
+        if (s == null) return false;
+        students.Remove(s);
+        return true;
+    }
+
+    // SEARCH
+    public List<Student> Search(string keyword)
+    {
+        keyword = keyword.ToLower();
+        return students
+            .Where(s => s.Name.ToLower().Contains(keyword) || s.Id.ToString().Contains(keyword))
+            .ToList();
+    }
+}
